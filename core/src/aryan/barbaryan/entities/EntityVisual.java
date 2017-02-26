@@ -1,8 +1,9 @@
 package aryan.barbaryan.entities;
 
-import actor.Entity;
 import aryan.barbaryan.TextureHelper;
 import com.badlogic.gdx.graphics.Texture;
+import location.GridLocation2D;
+import actor.Entity;
 
 /**
  * Created by Aryan on 2/23/2017.
@@ -23,7 +24,12 @@ public class EntityVisual implements Comparable {
     public Texture getTexture() {
         if (this.texture == null)
             this.texture = this.genTexture();
+
         return this.texture;
+    }
+
+    public GridLocation2D getLocation() {
+        return this.entity.getLocation(); // TODO: make this more effecient with an instance var
     }
 
     @Override

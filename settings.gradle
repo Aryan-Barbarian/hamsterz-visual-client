@@ -1,1 +1,3 @@
 include 'desktop', 'core'
+//include ':Dependency'
+//project(':Dependency').projectDir = new File('../hamsterz')

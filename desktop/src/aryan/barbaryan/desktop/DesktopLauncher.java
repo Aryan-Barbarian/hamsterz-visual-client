@@ -1,8 +1,9 @@
 package aryan.barbaryan.desktop;
 
+import aryan.barbaryan.VisualClient;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import aryan.barbaryan.VisualClient;
+
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

@@ -1,21 +1,21 @@
 package aryan.barbaryan;
 
+import actor.Actor;
 import actor.Hamster;
+
 import aryan.barbaryan.entities.EntityVisual;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import actor.Entity;
-import core.Game;
 import core.World;
 import location.Grid;
 import location.GridLocation2D;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -44,8 +44,8 @@ public class VisualClient extends ApplicationAdapter {
 		GridLocation2D loc3 = GridLocation2D.getLocation(3, 7);
 
 		world.addMember(zg1, loc1, true); // TODO: shouldn't have to deal with canMove
-		world.addMember(zg2, loc1, true);
-		world.addMember(zg3, loc1, true);
+		world.addMember(zg2, loc2, true);
+		world.addMember(zg3, loc3, true);
 	}
 
 	@Override
@@ -59,10 +59,42 @@ public class VisualClient extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+		// Update world
+		world.turn();
+
+		// Get new actors (if any)
+		Map<Actor, GridLocation2D> actorToLoc = world.getDisplayInfoByMember();
+		for (Actor actor : actorToLoc.keySet()) {
+			if (this.entitiesAdded.contains(actor)) {
+				// DO nothing
+			} else {
+//				GridLocation2D actorLoc = actorToLoc.get(actor); // TODO: Is this info wasted?
+				// TODO: Add isntance variable in visual so we can have it cache the location now and not have to look it up again later
+				EntityVisual vis = castToEntityVisual(actor);
+				drawQueue.add(vis);
+
+			}
+		}
+
+		// Actually draw them
 		batch.begin();
 
+		for (EntityVisual vis : this.drawQueue) {
+			GridLocation2D currLoc = vis.getLocation();
+			// TODO: make a better drawing method
+			int tileSize = 15; // pixels
+			int rX = currLoc.x * tileSize;
+			int rY = currLoc.y * tileSize;
+			batch.draw(vis.getTexture(), rX, rY);
+		}
 //		batch.draw(jetTexture, 100, 100);
 		batch.end();
+	}
+
+	public EntityVisual castToEntityVisual(Entity rawEntity) {
+		// TODO: Priority
+		return new EntityVisual(rawEntity);
 	}
 
 	@Override
